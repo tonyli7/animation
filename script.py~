@@ -73,9 +73,7 @@ from draw import *
   jdyrlandweaver
   ==================== """
 def first_pass( commands ):
-    for command in commands:
-    
-        if cmd == 'frames'
+        
 
 """======== second_pass( commands ) ==========
 
@@ -95,10 +93,9 @@ def first_pass( commands ):
   appropirate value. 
   ===================="""
 def second_pass( commands, num_frames ):
-    pass
-    
+
+
 def run(filename):
-   
     """
     This function runs an mdl script
     """
@@ -116,6 +113,7 @@ def run(filename):
         
     stack = [ tmp ]
     screen = new_screen()    
+        
     for command in commands:
         if command[0] == "pop":
             stack.pop()
