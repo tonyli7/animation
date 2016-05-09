@@ -49,11 +49,14 @@
 
 
 
-import mdl
+import mdl 
+import sys
 from display import *
 from matrix import *
 from draw import *
 
+num_frames=0
+basename = ''
 
 """======== first_pass( commands, symbols ) ==========
 
@@ -73,14 +76,29 @@ from draw import *
   jdyrlandweaver
   ==================== """
 def first_pass( commands ):
-    for command in commands:
+    CMDS = [ cmd[0] for cmd in commands]
+    if 'vary' in CMDS and 'frames' not in CMDS:
+        sys.exit()
     
-        if cmd == 'frames'
+    if 'frames' in CMDS and 'basename' not in CMDS:
+        basename = 'jiff'
+        print 'basename set to jiff'
+        
+    for command in commands:
+        cmd = command[0]
+        args = command[1:]
+      
+        if cmd == 'frames':
+            num_frames = args[0]
+            print num_frames
+
+        elif cmd == 'basename':
+            basename = args[0]
 
 """======== second_pass( commands ) ==========
 
   In order to set the knobs for animation, we need to keep
-  a seaprate value for each knob for each frame. We can do
+  a separate value for each knob for each frame. We can do
   this by using an array of dictionaries. Each array index
   will correspond to a frame (eg. knobs[0] would be the first
   frame, knobs[2] would be the 3rd frame and so on).
@@ -92,7 +110,7 @@ def first_pass( commands ):
   Go through the command array, and when you find vary, go 
   from knobs[0] to knobs[frames-1] and add (or modify) the
   dictionary corresponding to the given knob with the
-  appropirate value. 
+  appropriate value. 
   ===================="""
 def second_pass( commands, num_frames ):
     pass
@@ -105,7 +123,7 @@ def run(filename):
     color = [255, 255, 255]
     tmp = new_matrix()
     ident( tmp )
-
+  
     p = mdl.parseFile(filename)
 
     if p:
@@ -116,6 +134,9 @@ def run(filename):
         
     stack = [ tmp ]
     screen = new_screen()    
+    first_pass(commands)
+    print num_frames
+    print basename
     for command in commands:
         if command[0] == "pop":
             stack.pop()
