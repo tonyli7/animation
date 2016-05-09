@@ -57,7 +57,7 @@ from draw import *
 
 num_frames=0
 basename = ''
-
+knob = []
 """======== first_pass( commands, symbols ) ==========
 
   Checks the commands array for any animation commands
@@ -89,10 +89,12 @@ def first_pass( commands ):
         args = command[1:]
       
         if cmd == 'frames':
+            global num_frames
             num_frames = args[0]
             print num_frames
 
         elif cmd == 'basename':
+            global basename
             basename = args[0]
 
 """======== second_pass( commands ) ==========
@@ -113,8 +115,41 @@ def first_pass( commands ):
   appropriate value. 
   ===================="""
 def second_pass( commands, num_frames ):
-    pass
+    global knob
+    knob = []
+    for i in range(num_frames):
+        knob.append({})
+        
+    for command in commands:
+        cmd = command[0]
+        args = command[1:]
+        print cmd
+       
+        if cmd == 'vary':
+            
+            varname = args[0]
+            
+            start_frame = args[1]
+            end_frame = args[2]
+            start_val = args[3]
+            end_val = args[4]
+
+            frames = end_frame - start_frame
+
+            d = 1
+            if frames < 0:
+                d=-1
+
+          
+            for x in range(start_frame, end_frame+1, d):
+                frame = x*1.0/num_frames
+                knob[x][varname]=frame
+             
+               
+                
+    print knob
     
+
 def run(filename):
    
     """
@@ -135,8 +170,8 @@ def run(filename):
     stack = [ tmp ]
     screen = new_screen()    
     first_pass(commands)
-    print num_frames
-    print basename
+    second_pass(commands, num_frames)
+  
     for command in commands:
         if command[0] == "pop":
             stack.pop()
@@ -194,7 +229,9 @@ def run(filename):
             matrix_mult(stack[-1], m)
             draw_lines( m, screen, color )
 
-        if command[0] == "move":                
+        if command[0] == "move":
+            
+                
             xval = command[1]
             yval = command[2]
             zval = command[3]
@@ -204,24 +241,56 @@ def run(filename):
             stack[-1] = t
 
         if command[0] == "scale":
-            xval = command[1]
-            yval = command[2]
-            zval = command[3]
+            if command[-1] == "bigenator":
+                for i in range(num_frames):
+                    xval = command[1]*knob[i]["bigenator"]
+                    yval = command[1]*knob[i]["bigenator"]
+                    zval = command[1]*knob[i]["bigenator"]
 
-            t = make_scale(xval, yval, zval)
-            matrix_mult( stack[-1], t )
-            stack[-1] = t
+                    t = make_scale(xval, yval, zval)
+                    matrix_mult(stack[-1], t)
+                    stack[-1] = t
+                    zeros = 3-i/10
+
+                    print basename+"/"+basename+("0"*zeros)+str(i)+".ppm"
+                    save_extension(screen, basename+"/"+basename+("0"*zeros)+str(i)+".ppm")
+            else:
+                
+                xval = command[1]
+                yval = command[2]
+                zval = command[3]
+
+                t = make_scale(xval, yval, zval)
+                matrix_mult( stack[-1], t )
+                stack[-1] = t
             
         if command[0] == "rotate":
-            angle = command[2] * (math.pi / 180)
+            if command[-1] == "spinny":
+                for i in range(num_frames):
+                    angle = command[2] * (math.pi / 180) * knob[i]["spinny"]
 
-            if command[1] == 'x':
-                t = make_rotX( angle )
-            elif command[1] == 'y':
-                t = make_rotY( angle )
-            elif command[1] == 'z':
-                t = make_rotZ( angle )            
+                    if command[1] == 'x':
+                        t = make_rotX( angle )
+                    elif command[1] == 'y':
+                        t = make_rotY( angle )
+                    elif command[1] == 'z':
+                        t = make_rotZ( angle )            
                 
-            matrix_mult( stack[-1], t )
-            stack[-1] = t
+                    matrix_mult( stack[-1], t )
+                    stack[-1] = t
+
+                    zeros = 3-i/10
+                    save_extension(screen, basename+"/"+basename+("0"*zeros)+str(i)+".ppm")
+            else:
+
+                angle = command[2] * (math.pi / 180)
+                if command[1] == 'x':
+                    t = make_rotX( angle )
+                elif command[1] == 'y':
+                    t = make_rotY( angle )
+                elif command[1] == 'z':
+                    t = make_rotZ( angle )            
+                
+                    matrix_mult( stack[-1], t )
+                    stack[-1] = t
             

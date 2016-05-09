@@ -1,8 +1,9 @@
 def second_pass(commands, num_frames):
-    knob = []
+    knob = []*num_frames
     for command in commands:
         cmd = command[0]
         args = command[1:]
+        print cmd
         varname = args[0]
         if cmd == 'vary':
             start_frame = args[1]
@@ -16,7 +17,8 @@ def second_pass(commands, num_frames):
             if frames < 0:
                 d=-1
 
-          
+            for x in range(start_frame, end_frame+1, d):
+                knob[i].append({varname:x/num_frames})
                 
-            knob=[{varname:x/num_frames} for x in range(start_frame, end_frame+1,d)]
-        
+    print knob
+    
