@@ -138,24 +138,30 @@ def second_pass( commands, num_frames ):
 
             d = end_val - start_val
             
-            knob[0][varname] = 0
+            #knob[0][varname] = 0
             corrector = 0
             
+            temp2 = end_frame
             if d < 0:
-                knob[0][varname] = 1
+                #knob[0][varname] = 1
                 corrector = num_frames
+                temp1 = start_frame
+                
+                start_frame = end_frame
+                end_frame = temp1
+                
              
-            for x in range(d, num_frames*d, d):
-                print str(knob[x])+"   "+str(x)
-                if x+corrector > start_frame and x+corrector < end_frame:
-                    
-                    frame = (x+corrector)*1.0/d_frame
-                    knob[x][varname]=frame
+            for x in range(start_frame, end_frame+d, d):
+               
+                frame = (abs(x-start_frame))*1.0/d_frame
+                knob[x][varname]=frame
+                """
                 elif x+corrector <= start_frame:
                     knob[x][varname]=0
                 else:
                     knob[x][varname]=1
-
+                """
+                #print str(knob[x])+"   "+str(x)+"  "+varname
             
                
     #print knob
@@ -183,7 +189,7 @@ def run(filename):
     screen = new_screen()    
     first_pass(commands)
     second_pass(commands, num_frames)
-    """
+    
     for j in range(num_frames):
         stack = [ tmp ]
         for command in commands:
@@ -289,6 +295,6 @@ def run(filename):
             zeros = 2-int(math.log10(j))
         save_ppm(screen, basename+"/"+basename+('0'*zeros)+str(j)+'.png')
         clear_screen(screen)
-               
-    print knob    
-    """
+        print j     
+    #print knob    
+   
