@@ -157,7 +157,7 @@ def second_pass( commands, num_frames ):
                     knob[x][varname]=1
                     
                
-    print knob
+    #print knob
     
 
 def run(filename):
@@ -178,12 +178,13 @@ def run(filename):
         print "Parsing failed."
         return
         
-    stack = [ tmp ]
+   
     screen = new_screen()    
     first_pass(commands)
     second_pass(commands, num_frames)
        
     for j in range(num_frames):
+        stack = [ tmp ]
         for command in commands:
             if command[0] == "pop":
                 stack.pop()
