@@ -250,16 +250,24 @@ def run(filename):
                 draw_lines( m, screen, color )
     
             if command[0] == "move":
-                
-                
-                xval = command[1]
-                yval = command[2]
-                zval = command[3]
+                print knob
+                if command[-1] == "mover":
+                    
+                    xval = command[1]*knob[j]["mover"]
+                    yval = command[2]*knob[j]["mover"]
+                    zval = command[3]*knob[j]["mover"]
+
+                   
+
+                else:
+                    xval = command[1]
+                    yval = command[2]
+                    zval = command[3]
 
                 t = make_translate(xval, yval, zval)
                 matrix_mult( stack[-1], t )
                 stack[-1] = t
-    
+                    
             if command[0] == "scale":
                 if command[-1] == "bigenator":
                    

@@ -1,0 +1,12 @@
+frames 20
+basename rekt
+push
+move 175 250 0
+scale 2 2 2 bigenator
+sphere 0 0 0 30
+vary bigenator 0 4 0 1
+vary bigenator 5 9 1 0
+pop
+push
+move 400 250 0 mover
+vary mover 10 19 0 1
