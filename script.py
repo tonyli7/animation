@@ -123,7 +123,7 @@ def second_pass( commands, num_frames ):
     for command in commands:
         cmd = command[0]
         args = command[1:]
-        print cmd
+      
        
         if cmd == 'vary':
             
@@ -146,7 +146,7 @@ def second_pass( commands, num_frames ):
                 corrector = num_frames
              
             for x in range(d, num_frames*d, d):
-                print x
+                print str(knob[x])+"   "+str(x)
                 if x+corrector > start_frame and x+corrector < end_frame:
                     
                     frame = (x+corrector)*1.0/d_frame
@@ -155,7 +155,8 @@ def second_pass( commands, num_frames ):
                     knob[x][varname]=0
                 else:
                     knob[x][varname]=1
-                    
+
+            
                
     #print knob
     
@@ -182,7 +183,7 @@ def run(filename):
     screen = new_screen()    
     first_pass(commands)
     second_pass(commands, num_frames)
-       
+    """
     for j in range(num_frames):
         stack = [ tmp ]
         for command in commands:
@@ -280,7 +281,7 @@ def run(filename):
                     
                     matrix_mult( stack[-1], t )
                     stack[-1] = t
-                    print stack
+                 
 
         if j == 0:
             zeros = 2
@@ -289,4 +290,5 @@ def run(filename):
         save_ppm(screen, basename+"/"+basename+('0'*zeros)+str(j)+'.png')
         clear_screen(screen)
                
-        
+    print knob    
+    """
