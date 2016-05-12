@@ -250,7 +250,7 @@ def run(filename):
                 draw_lines( m, screen, color )
     
             if command[0] == "move":
-                print knob
+                
                 if command[-1] == "mover":
                     
                     xval = command[1]*knob[j]["mover"]
@@ -303,6 +303,7 @@ def run(filename):
             zeros = 2-int(math.log10(j))
         save_ppm(screen, basename+"/"+basename+('0'*zeros)+str(j)+'.png')
         clear_screen(screen)
-        print j     
+        print j
     #print knob    
    
+    
